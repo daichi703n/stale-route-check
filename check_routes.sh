@@ -17,6 +17,13 @@ for i in $(seq 1 $ROUTER_INSTANCE_NUM); do
   pass=$(bosh -d $DEPLOYMENT_NAME ssh router/0 -c 'head -5 /var/vcap/jobs/gorouter/config/gorouter.yml' | grep pass | awk '{print $5}' | tr -d '\r')
   bosh -d $DEPLOYMENT_NAME ssh router/0 -c "curl router_status:$pass@localhost:8080/routes" | grep stdout | awk '{print $4}' > /tmp/routes.json
   echo "checking router/$ROUTER_INSTANCE_NUM"
-  python compare.py
+  result=$(python compare.py)
+  echo $result >> /tmp/result.log
   #call py script as it's much easier when doing json parsing
 done
+
+if [ -s /tmp/result.log ]; then
+  echo "Stale Route Found."
+  cat /tmp/result.log
+  exit 99
+fi
