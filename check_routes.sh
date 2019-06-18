@@ -8,7 +8,7 @@
 # export DEPLOYMENT_NAME= <dep_name>
 # export ROUTER_INSTANCE_NUM= <number_of_gorouter>
 
-bosh -d $DEPLOYMENT_NAME ssh diego_cell/0 -c "sudo -i; source /var/vcap/jobs/cfdot/bin/setup; cfdot actual-lrp-groups > /tmp/cfdot.json"
+bosh -d $DEPLOYMENT_NAME ssh diego_cell/0 -c "source /var/vcap/jobs/cfdot/bin/setup; cfdot actual-lrp-groups > /tmp/cfdot.json"
 bosh -d $DEPLOYMENT_NAME scp diego_cell/0:/tmp/cfdot.json /tmp/cfdot.json
 #download the cfdot files
 
