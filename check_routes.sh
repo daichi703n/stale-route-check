@@ -13,10 +13,11 @@ bosh -d $DEPLOYMENT_NAME scp diego_cell/0:/tmp/cfdot.json /tmp/cfdot.json
 #download the cfdot files
 
 for i in $(seq 1 $ROUTER_INSTANCE_NUM); do
+  j=$i-1
   #as there could be multiple gorouters and each may have different routing table, we need to check them one by one
   pass=$(bosh -d $DEPLOYMENT_NAME ssh router/0 -c 'head -5 /var/vcap/jobs/gorouter/config/gorouter.yml' | grep pass | awk '{print $5}' | tr -d '\r')
-  bosh -d $DEPLOYMENT_NAME ssh router/0 -c "curl router_status:$pass@localhost:8080/routes" | grep stdout | awk '{print $4}' > /tmp/routes.json
-  echo "checking router/$ROUTER_INSTANCE_NUM"
+  bosh -d $DEPLOYMENT_NAME ssh router/$j -c "curl router_status:$pass@localhost:8080/routes" | grep stdout | awk '{print $4}' > /tmp/routes.json
+  echo "checking router/$j"
   result=$(python compare.py)
   echo $result >> result.log
   #call py script as it's much easier when doing json parsing
