@@ -22,11 +22,13 @@ for i in $(seq 1 $ROUTER_INSTANCE_NUM); do
   bosh -d $DEPLOYMENT_NAME ssh router/$((i-1)) -c "curl router_status:$pass@localhost:8080/routes" | grep stdout | awk '{print $4}' > /tmp/routes.json
   echo "checking router/$((i-1))"
   result=$(python compare.py)
-  echo $result >> result.log
+  if test $result != "No Stale Route Found"; then
+    echo $result >> result.log
+  fi
   #call py script as it's much easier when doing json parsing
 done
 
-if [ -s result.log ]; then
+if test -e "result.log"; then
   # for Slack mention
   echo "<!here>" >> result.log
   echo "Stale Route Found."
