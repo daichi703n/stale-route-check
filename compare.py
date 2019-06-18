@@ -3,7 +3,7 @@ import re
 import subprocess
 
 #Please replace the credentials here, make sure you can cf login with the correct credentails
-bashCommand= "cf login -a $API_ENDPOINT -u $CF_ADMIN_USER -p $CF_ADMIN_PASSWORD -o system -s system --skip-ssl-validation"
+bashCommand= "cf login -a $API_ENDPOINT -u $CF_ADMIN_USERNAME -p $CF_ADMIN_PASSWORD -o system -s system --skip-ssl-validation"
 process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
 output, error = process.communicate()
 
