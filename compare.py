@@ -41,7 +41,6 @@ for key in lrp:
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
     output_string = output.decode("utf-8")
-    print(output_string)
     app_stats=json.loads(output_string)
     app_name=app_stats["0"]["stats"]["uris"]
     #app can have multiple routes, so app_name could be a list
