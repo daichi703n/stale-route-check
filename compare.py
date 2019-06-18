@@ -53,4 +53,5 @@ for key in lrp:
             count += 1
 
 if count == 0:
-    print("No Stale Route Found")
+    # print("No Stale Route Found")
+    print("")
