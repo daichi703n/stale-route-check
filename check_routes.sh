@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Environment variables are required
 # export BOSH_CLIENT= <uaa_bosh_client>
 # export BOSH_CLIENT_SECRET= <uaa_bosh_secret>
 # export BOSH_CA_CERT= <path_to_ca_cert>
@@ -7,6 +8,9 @@
 # export APP_NAME= <app_name>
 # export DEPLOYMENT_NAME= <dep_name>
 # export ROUTER_INSTANCE_NUM= <number_of_gorouter>
+# export API_ENDPOINT= <api.sys.DOMAIN>
+# export CF_ADMIN_USERNAME= <admin>
+# export CF_ADMIN_PASSWORD= <admin password>
 
 bosh -d $DEPLOYMENT_NAME ssh diego_cell/0 -c "source /var/vcap/jobs/cfdot/bin/setup; cfdot actual-lrp-groups > /tmp/cfdot.json; chmod 666 /tmp/cfdot.json"
 bosh -d $DEPLOYMENT_NAME scp diego_cell/0:/tmp/cfdot.json /tmp/cfdot.json
@@ -23,8 +27,9 @@ for i in $(seq 1 $ROUTER_INSTANCE_NUM); do
 done
 
 if [ -s result.log ]; then
-  echo "Stale Route Found."
+  # for Slack mention
   echo "<!here>" >> result.log
+  echo "Stale Route Found."
   cat result.log
   exit 99
 fi
