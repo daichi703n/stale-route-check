@@ -24,7 +24,7 @@ done
 
 if [ -s result.log ]; then
   echo "Stale Route Found."
-  echo "@here" >> result.log
+  echo "<!here>" >> result.log
   cat result.log
   exit 99
 fi
