@@ -40,7 +40,11 @@ for key in lrp:
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
     output_string = output.decode("utf-8")
-    app_stats=json.loads(output_string)
+    try:
+        app_stats=json.loads(output_string)
+    except TypeError:
+        print("TypeError")
+        continue
     app_name=app_stats["0"]["stats"]["uris"]
     #app can have multiple routes, so app_name could be a list
     if address in gorouter:
