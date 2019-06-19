@@ -23,8 +23,10 @@ for i in $(seq 1 $ROUTER_INSTANCE_NUM); do
   echo "checking router/$((i-1))"
   #call py script as it's much easier when doing json parsing
   result=$(python compare.py)
-  if test "$result" != "No Stale Route Found"; then
+  if [ "`echo $result | grep Possible`" ]; then
     echo $result >> result.log
+  elif [ "`echo $result | grep TypeError`" ]; then
+    echo $result >> typeerror.log
   fi
   echo $result
 done

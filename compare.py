@@ -31,7 +31,11 @@ count=0
 
 for key in lrp:
     ip = key["instance"]["address"]
-    port = key["instance"]["ports"][0]["host_tls_proxy_port"]
+    try:
+        port = key["instance"]["ports"][0]["host_tls_proxy_port"]
+    except TypeError:
+        print("TypeError")
+        continue
     address = ip+":"+str(port)
     #address comes from LRP
     app_guid = key["instance"]["process_guid"][:36]
@@ -40,11 +44,7 @@ for key in lrp:
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
     output_string = output.decode("utf-8")
-    try:
-        app_stats=json.loads(output_string)
-    except TypeError:
-        print("TypeError")
-        continue
+    app_stats=json.loads(output_string)
     app_name=app_stats["0"]["stats"]["uris"]
     #app can have multiple routes, so app_name could be a list
     if address in gorouter:
