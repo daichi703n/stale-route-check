@@ -12,7 +12,7 @@
 # export CF_ADMIN_USERNAME= <admin>
 # export CF_ADMIN_PASSWORD= <admin password>
 
-bosh -d $DEPLOYMENT_NAME ssh diego_cell/0 -c "source /var/vcap/jobs/cfdot/bin/setup; cfdot actual-lrp-groups > /tmp/cfdot.json;"
+bosh -d $DEPLOYMENT_NAME ssh diego_cell/0 -c "source /var/vcap/jobs/cfdot/bin/setup; cfdot actual-lrp-groups > /tmp/cfdot.json; chmod 666 /tmp/cfdot.json;"
 bosh -d $DEPLOYMENT_NAME scp diego_cell/0:/tmp/cfdot.json /tmp/cfdot.json
 #download the cfdot files
 
